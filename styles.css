@@ -1,0 +1,152 @@
+/* Add this to your existing styles.css file or create a new one */
+
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.container {
+  max-width: 400px;
+  margin: auto;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.heading {
+  text-align: center;
+  color: #333;
+  font-size: 35px;
+  margin-bottom: 20px;
+}
+
+/* Styling for radio buttons */
+.percentage {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.gst-rate {
+  display: none;
+}
+
+.gst-rate + label {
+  padding: 12px;
+  background-color: #3498db;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.gst-rate:checked + label {
+  background-color: #2c3e50;
+}
+
+/* Styling for input fields */
+#amt,
+#gst-incl-amt {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  box-sizing: border-box;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Styling for buttons */
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  cursor: pointer;
+  background-color: #27ae60;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #219550;
+}
+
+/* Result Section styling */
+.amount-container {
+  display: none;
+  margin-top: 20px;
+}
+
+.amount-container h2 {
+  text-align: center;
+  color: #333;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.amount-container div {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Download PDF button styling */
+#download-pdf-btn {
+  /* width: 100%; */
+  padding: 12px;
+  margin-top: 20px;
+  cursor: pointer;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+#download-pdf-btn:hover {
+  background-color: #2c3e50;
+}
+
+span {
+  background-color: #f8d7da;
+  padding: 2px 4px;
+  border-radius: 4px;
+  color: #721c24;
+  font-weight: bold;
+}
+.copy-text {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.copy-text:hover {
+  text-decoration: none;
+}
+
+.result-amount {
+  background-color: #dff0d8;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.result-amount span {
+  color: #28a745;
+  margin-left: 5px;
+}
+
+.not-allow {
+  pointer-events: none;
+}

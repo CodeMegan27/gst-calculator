@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GST Calculator</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1 class="heading">GST Calculator</h1>
+
+      <!-- Input for Amount -->
+      <label for="amt">Enter Amount:</label>
+      <input type="number" id="amt" name="amount" />
+
+      <!-- Radio buttons for GST Type -->
+      <div class="percentage">
+        <div>
+          <input type="radio" value="0" name="rate" id="0" class="gst-rate" />
+          <label for="0">0%</label>
+        </div>
+
+        <div>
+          <input
+            type="radio"
+            value="0.25"
+            name="rate"
+            id="0.25"
+            class="gst-rate"
+          />
+          <label for="0.25">0.25%</label>
+        </div>
+
+        <div>
+          <input type="radio" value="3" name="rate" id="3" class="gst-rate" />
+          <label for="3">3%</label>
+        </div>
+
+        <div>
+          <input type="radio" value="5" name="rate" id="5" class="gst-rate" />
+          <label for="5">5%</label>
+        </div>
+
+        <div>
+          <input type="radio" value="12" name="rate" id="12" class="gst-rate" />
+          <label for="12">12%</label>
+        </div>
+
+        <div>
+          <input type="radio" value="18" name="rate" id="18" class="gst-rate" />
+          <label for="18">18%</label>
+        </div>
+
+        <div>
+          <input type="radio" value="28" name="rate" id="28" class="gst-rate" />
+          <label for="28">28%</label>
+        </div>
+      </div>
+
+      <!-- Submit and Reset Buttons -->
+      <button id="submit-btn" type="submit">Submit</button>
+      <button id="reset-btn" type="reset">Reset</button>
+
+      <!-- Result Section -->
+
+      <div class="amount-container" style="display: none">
+        <h2>Result</h2>
+        <div>
+          <h2>GST Amount:</h2>
+          <div>
+            <p class="label">CGST + SGST = <span id="gst-amnt">0</span></p>
+            <p class="cgst-rate">
+              CGST =
+              <span id="cgst-rate" class="copy-text" onclick="copyToClipboard()"
+                >0</span
+              >
+            </p>
+            <p class="sgst-rate">
+              SGST =
+              <span id="sgst-rate" class="copy-text" onclick="copyToClipboard()"
+                >0</span
+              >
+            </p>
+          </div>
+        </div>
+        <div>
+          <p class="result-amount not-allow">
+            GST Included Amount =
+            <span
+              id="gst-incl-amt"
+              class="copy-text"
+              onclick="copyToClipboard()"
+              >0</span
+            >
+          </p>
+        </div>
+      </div>
+      <a href="itc-calc.html" style="padding: 5px 0; display: block; color: red"
+        >GST Payment and Input Tax Credit Calculator</a
+      >
+
+      <button id="download-pdf-btn" onclick="downloadAsPDF()">
+        Download as PDF
+      </button>
+    </div>
+
+    <script>
+      const { jsPDF } = window.jspdf;
+
+      const submitBtn = document.getElementById("submit-btn");
+      const resetBtn = document.getElementById("reset-btn");
+      const resultSection = document.querySelector(".amount-container");
+      const downloadPDFBtn = document.getElementById("download-pdf-btn");
+      let findAmount = document.getElementById("amt");
+      let gstTotal = document.getElementById("gst-incl-amt");
+      let gstValue = document.getElementById("gst-amnt");
+      let cgstRate = document.getElementById("cgst-rate");
+      let sgstRate = document.getElementById("sgst-rate");
+      downloadPDFBtn.style.display = "none";
+
+      submitBtn.addEventListener("click", function () {
+        const inputValue = Number(findAmount.value);
+
+        if (isNaN(inputValue)) {
+          console.log("Please enter a valid amount!");
+          return;
+        }
+
+        let gstRte = 0;
+
+        if (document.querySelector('input[name="rate"]:checked')) {
+          const selectedRadio = document.querySelector(
+            'input[name="rate"]:checked'
+          );
+          gstRte = (inputValue * Number(selectedRadio.value)) / 100;
+          cgstRate.innerText = Number(gstRte / 2).toFixed(2);
+          sgstRate.innerText = Number(gstRte / 2).toFixed(2);
+          gstValue.innerText = Number(gstRte.toFixed(2));
+        } else {
+          console.log("Please select a GST rate!");
+          return;
+        }
+
+        const totalValue = inputValue + Number(gstRte);
+        console.log(totalValue);
+        gstTotal.innerText = totalValue;
+
+        // Show the result section after clicking submit
+        resultSection.style.display = "block";
+        downloadPDFBtn.style.display = "inline-block";
+      });
+
+      resetBtn.addEventListener("click", () => {
+        alert("Values of the inputs are gone!");
+        findAmount.value = ""; // Corrected the space inside the double quotes
+        gstTotal.innerText = "0"; // Clear the text content of gstTotal
+        gstValue.textContent = "0";
+        cgstRate.textContent = "0";
+        sgstRate.textContent = "0";
+        document.querySelector('input[type="radio"]:checked').checked = false;
+
+        // Hide the result section after clicking reset
+        resultSection.style.display = "none";
+        downloadPDFBtn.style.display = "none";
+        console.log("Reset clicked");
+      });
+
+      function copyToClipboard(elementId) {
+        const textToCopy = document.querySelector(".copy-text").innerText;
+        const inputElement = document.createElement("input");
+        inputElement.value = textToCopy;
+        document.body.appendChild(inputElement);
+        inputElement.select();
+        inputElement.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        document.body.removeChild(inputElement);
+        alert("Text copied to clipboard: " + textToCopy);
+      }
+
+      // Download pdf
+      function downloadAsPDF() {
+        const pdf = new jsPDF();
+
+        const resultSection = document.querySelector(".amount-container");
+
+        pdf.setFontSize(16);
+        pdf.text(20, 20, "GST Calculator Result");
+
+        // Underline
+        const underlineYPos = 25;
+        const underlineWidth =
+          (pdf.getStringUnitWidth("GST Calculator Result") * 16) /
+          pdf.internal.scaleFactor;
+        pdf.setLineWidth(0.5);
+        pdf.line(20, underlineYPos, 20 + underlineWidth, underlineYPos);
+
+        pdf.setFontSize(12);
+
+        const elementsToPrint = resultSection.querySelectorAll(
+          ".label, .cgst-rate, .sgst-rate, .result-amount"
+        );
+
+        let yPos = 35;
+        elementsToPrint.forEach((el) => {
+          const text = el.innerText.trim();
+          if (text) {
+            pdf.text(20, yPos, text);
+            yPos += 10;
+          }
+        });
+
+        pdf.save("GST_Calculator_Result.pdf");
+      }
+    </script>
+  </body>
+</html>
