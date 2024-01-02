@@ -24,7 +24,7 @@ A simple web application to calculate GST (Goods and Services Tax) for a given a
 - Clone the repository:
 
   ```bash
-  git clone https://github.com/your-username/gst-calculator.git
+  git clone [ https://github.com/your-username/gst-calculator.git](https://github.com/CodeMegan27/gst-calculator/tree/e8f91834925223a28300f4275b984f5f53b8881a)
     Open the index.html file in your preferred web browser.
 
 Dependencies
